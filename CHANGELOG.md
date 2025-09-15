@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v9.0.1 (2025-09-15)
+
+### Fixes
+
+* fix: update code for django-unfold ([`d1932cd`](https://github.com/megalus/django-google-sso/commit/d1932cde96dfcaafdef5d3e6b954ed8c6b52be73))
+
+
 ## v9.0.0 (2025-09-09)
 
 ### Chores
