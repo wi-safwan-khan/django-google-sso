@@ -68,7 +68,7 @@ urlpatterns += [
     ),
         path(
         "microsoft_sso/",
-        include("django_github_sso.urls", namespace="django_microsoft_sso"),
+        include("django_microsoft_sso.urls", namespace="django_microsoft_sso"),
     ),
 ]
 ```
