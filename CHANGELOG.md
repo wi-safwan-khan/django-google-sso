@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v9.0.2 (2025-09-16)
+
+### Fixes
+
+* fix: handle multiple reverse proxies in redirect URI generation
+
+Fixes #55 ([`eb3f859`](https://github.com/megalus/django-google-sso/commit/eb3f859df0e8307f9c586c8a2dba311d725f434c))
+
+
 ## v9.0.1 (2025-09-15)
 
 ### Fixes
