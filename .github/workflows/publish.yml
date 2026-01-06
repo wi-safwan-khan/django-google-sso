@@ -35,11 +35,12 @@ jobs:
           push: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish | Build and Publish to PyPI using Poetry
+      - name: Publish | Build and Publish to TestPyPI using Poetry
         if: steps.release.outputs.released == 'true'
         uses: JRubics/poetry-publish@v2.0
         with:
-          pypi_token: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
+          pypi_token: ${{ secrets.POETRY_PYPI_TOKEN_TESTPYPI }}
+          repository_url: https://test.pypi.org/legacy/
 
       - name: Release | Upload to GitHub Release Assets
         uses: python-semantic-release/publish-action@v10.3.1
