@@ -94,7 +94,6 @@ auto-changelog = "*"
 arrow = "*"
 black = {version = "*", allow-prereleases = true}
 Faker = "*"
-pre-commit = "*"
 pytest-coverage = "*"
 pytest-django = "*"
 pytest-mock = "*"
