@@ -1,16 +1,33 @@
 import arrow
 import httpx
-from asgiref.sync import iscoroutinefunction, sync_to_async
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.backends import ModelBackend
-from django.utils.decorators import sync_and_async_middleware
 from loguru import logger
 
+# Conditional async imports - only available on Django 3.0+
 try:
-    from django.contrib.auth import alogout
-except ImportError:  # Django < 5.0
-    alogout = sync_to_async(logout)
+    from django import VERSION as DJANGO_VERSION
+    if DJANGO_VERSION >= (3, 0):
+        from asgiref.sync import iscoroutinefunction, sync_to_async
+        from django.utils.decorators import sync_and_async_middleware
+        try:
+            from django.contrib.auth import alogout
+        except ImportError:  # Django < 5.0
+            alogout = sync_to_async(logout)
+        _async_available = True
+    else:
+        iscoroutinefunction = None
+        sync_to_async = None
+        sync_and_async_middleware = None
+        alogout = None
+        _async_available = False
+except ImportError:
+    iscoroutinefunction = None
+    sync_to_async = None
+    sync_and_async_middleware = None
+    alogout = None
+    _async_available = False
 
 
 class MyBackend(ModelBackend):
@@ -66,28 +83,38 @@ def is_user_valid(token):
     return response.status_code == 200
 
 
-@sync_and_async_middleware
 def google_slo_middleware_example(get_response):
-
-    if iscoroutinefunction(get_response):
-
-        async def middleware(request):
-            token = await sync_to_async(request.session.get)("google_sso_access_token")
-            if token and not await sync_to_async(is_user_valid)(token):
-                await alogout(request)
-            response = await get_response(request)
-            return response
-
+    """Middleware example with async support (Django 3.0+ only)."""
+    if _async_available and sync_and_async_middleware and iscoroutinefunction:
+        # Django 3.0+: Use async middleware decorator
+        @sync_and_async_middleware
+        def _middleware(get_response):
+            if iscoroutinefunction(get_response):
+                async def middleware(request):
+                    token = await sync_to_async(request.session.get)("google_sso_access_token")
+                    if token and not await sync_to_async(is_user_valid)(token):
+                        await alogout(request)
+                    response = await get_response(request)
+                    return response
+            else:
+                def middleware(request):
+                    token = request.session.get("google_sso_access_token")
+                    if token and not is_user_valid(token):
+                        logout(request)
+                    response = get_response(request)
+                    return response
+            return middleware
+        
+        return _middleware(get_response)
     else:
-
+        # Django < 3.0: Sync-only middleware
         def middleware(request):
             token = request.session.get("google_sso_access_token")
             if token and not is_user_valid(token):
                 logout(request)
             response = get_response(request)
             return response
-
-    return middleware
+        return middleware
 
 
 def pre_create_callback(google_info, request) -> dict:

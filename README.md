@@ -45,10 +45,15 @@ $ pip install django-google-sso
 ```
 
 > **Compatibility**
-> - Python 3.11, 3.12, 3.13
-> - Django 4.2, 5.0, 5.1, 5.2
+> - Python 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13
+> - Django 1.8, 1.9, 1.10, 1.11, 2.0, 2.1, 2.2, 3.0, 3.1, 3.2, 4.0, 4.1, 4.2, 5.0, 5.1, 5.2
 >
-> Older python/django versions are not supported.
+> **Note:** For Python 3.6, you need to install the `dataclasses` backport package:
+> ```shell
+> pip install dataclasses
+> ```
+>
+> Async features require Django 3.0+ and `asgiref` package.
 
 ### Configuration
 

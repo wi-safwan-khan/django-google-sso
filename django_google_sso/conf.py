@@ -1,4 +1,4 @@
-from typing import Any, Callable, List
+from typing import Any, Callable, List, Optional, Union
 
 from django.conf import settings
 from django.http import HttpRequest
@@ -44,7 +44,7 @@ class GoogleSSOSettings:
     # Configurations with optional callable
 
     @property
-    def GOOGLE_SSO_LOGO_URL(self) -> str | Callable[[HttpRequest], str]:
+    def GOOGLE_SSO_LOGO_URL(self) -> Union[str, Callable[[HttpRequest], str]]:
         return self._get_setting(
             "GOOGLE_SSO_LOGO_URL",
             "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/"
@@ -52,31 +52,31 @@ class GoogleSSOSettings:
         )
 
     @property
-    def GOOGLE_SSO_TEXT(self) -> bool | Callable[[HttpRequest], str] | None:
+    def GOOGLE_SSO_TEXT(self) -> Union[bool, Callable[[HttpRequest], str], None]:
         return self._get_setting("GOOGLE_SSO_TEXT", "Sign in with Google")
 
     @property
-    def GOOGLE_SSO_ADMIN_ENABLED(self) -> bool | Callable[[HttpRequest], str] | None:
+    def GOOGLE_SSO_ADMIN_ENABLED(self) -> Union[bool, Callable[[HttpRequest], str], None]:
         return self._get_setting("GOOGLE_SSO_ADMIN_ENABLED", None)
 
     @property
-    def GOOGLE_SSO_PAGES_ENABLED(self) -> bool | Callable[[HttpRequest], str] | None:
+    def GOOGLE_SSO_PAGES_ENABLED(self) -> Union[bool, Callable[[HttpRequest], str], None]:
         return self._get_setting("GOOGLE_SSO_PAGES_ENABLED", None)
 
     @property
-    def GOOGLE_SSO_CLIENT_ID(self) -> str | Callable[[HttpRequest], str] | None:
+    def GOOGLE_SSO_CLIENT_ID(self) -> Union[str, Callable[[HttpRequest], str], None]:
         return self._get_setting("GOOGLE_SSO_CLIENT_ID", None)
 
     @property
-    def GOOGLE_SSO_PROJECT_ID(self) -> str | Callable[[HttpRequest], str] | None:
+    def GOOGLE_SSO_PROJECT_ID(self) -> Union[str, Callable[[HttpRequest], str], None]:
         return self._get_setting("GOOGLE_SSO_PROJECT_ID", None)
 
     @property
-    def GOOGLE_SSO_CLIENT_SECRET(self) -> str | Callable[[HttpRequest], str] | None:
+    def GOOGLE_SSO_CLIENT_SECRET(self) -> Union[str, Callable[[HttpRequest], str], None]:
         return self._get_setting("GOOGLE_SSO_CLIENT_SECRET", None)
 
     @property
-    def GOOGLE_SSO_SCOPES(self) -> List[str] | Callable[[HttpRequest], List[str]]:
+    def GOOGLE_SSO_SCOPES(self) -> Union[List[str], Callable[[HttpRequest], List[str]]]:
         return self._get_setting(
             "GOOGLE_SSO_SCOPES",
             [
@@ -87,122 +87,122 @@ class GoogleSSOSettings:
         )
 
     @property
-    def GOOGLE_SSO_TIMEOUT(self) -> int | Callable[[HttpRequest], int]:
+    def GOOGLE_SSO_TIMEOUT(self) -> Union[int, Callable[[HttpRequest], int]]:
         return self._get_setting("GOOGLE_SSO_TIMEOUT", 10)
 
     @property
     def GOOGLE_SSO_ALLOWABLE_DOMAINS(
         self,
-    ) -> List[str] | Callable[[HttpRequest], List[str]]:
+    ) -> Union[List[str], Callable[[HttpRequest], List[str]]]:
         return self._get_setting("GOOGLE_SSO_ALLOWABLE_DOMAINS", [])
 
     @property
     def GOOGLE_SSO_AUTO_CREATE_FIRST_SUPERUSER(
         self,
-    ) -> bool | Callable[[HttpRequest], bool]:
+    ) -> Union[bool, Callable[[HttpRequest], bool]]:
         return self._get_setting("GOOGLE_SSO_AUTO_CREATE_FIRST_SUPERUSER", False)
 
     @property
-    def GOOGLE_SSO_SESSION_COOKIE_AGE(self) -> int | Callable[[HttpRequest], int]:
+    def GOOGLE_SSO_SESSION_COOKIE_AGE(self) -> Union[int, Callable[[HttpRequest], int]]:
         return self._get_setting("GOOGLE_SSO_SESSION_COOKIE_AGE", 3600)
 
     @property
     def GOOGLE_SSO_SUPERUSER_LIST(
         self,
-    ) -> List[str] | Callable[[HttpRequest], List[str]]:
+    ) -> Union[List[str], Callable[[HttpRequest], List[str]]]:
         return self._get_setting("GOOGLE_SSO_SUPERUSER_LIST", [])
 
     @property
-    def GOOGLE_SSO_STAFF_LIST(self) -> List[str] | Callable[[HttpRequest], List[str]]:
+    def GOOGLE_SSO_STAFF_LIST(self) -> Union[List[str], Callable[[HttpRequest], List[str]]]:
         return self._get_setting("GOOGLE_SSO_STAFF_LIST", [])
 
     @property
-    def GOOGLE_SSO_CALLBACK_DOMAIN(self) -> str | Callable[[HttpRequest], str] | None:
+    def GOOGLE_SSO_CALLBACK_DOMAIN(self) -> Union[str, Callable[[HttpRequest], str], None]:
         return self._get_setting("GOOGLE_SSO_CALLBACK_DOMAIN", None)
 
     @property
-    def GOOGLE_SSO_LOGIN_FAILED_URL(self) -> str | Callable[[HttpRequest], str]:
+    def GOOGLE_SSO_LOGIN_FAILED_URL(self) -> Union[str, Callable[[HttpRequest], str]]:
         return self._get_setting("GOOGLE_SSO_LOGIN_FAILED_URL", "admin:index")
 
     @property
-    def GOOGLE_SSO_NEXT_URL(self) -> str | Callable[[HttpRequest], str]:
+    def GOOGLE_SSO_NEXT_URL(self) -> Union[str, Callable[[HttpRequest], str]]:
         return self._get_setting("GOOGLE_SSO_NEXT_URL", "admin:index")
 
     @property
-    def GOOGLE_SSO_AUTO_CREATE_USERS(self) -> bool | Callable[[HttpRequest], bool]:
+    def GOOGLE_SSO_AUTO_CREATE_USERS(self) -> Union[bool, Callable[[HttpRequest], bool]]:
         return self._get_setting("GOOGLE_SSO_AUTO_CREATE_USERS", True)
 
     @property
     def GOOGLE_SSO_AUTHENTICATION_BACKEND(
         self,
-    ) -> str | Callable[[HttpRequest], str] | None:
+    ) -> Union[str, Callable[[HttpRequest], str], None]:
         return self._get_setting("GOOGLE_SSO_AUTHENTICATION_BACKEND", None)
 
     @property
-    def GOOGLE_SSO_PRE_VALIDATE_CALLBACK(self) -> str | Callable[[HttpRequest], str]:
+    def GOOGLE_SSO_PRE_VALIDATE_CALLBACK(self) -> Union[str, Callable[[HttpRequest], str]]:
         return self._get_setting(
             "GOOGLE_SSO_PRE_VALIDATE_CALLBACK",
             "django_google_sso.hooks.pre_validate_user",
         )
 
     @property
-    def GOOGLE_SSO_PRE_CREATE_CALLBACK(self) -> str | Callable[[HttpRequest], str]:
+    def GOOGLE_SSO_PRE_CREATE_CALLBACK(self) -> Union[str, Callable[[HttpRequest], str]]:
         return self._get_setting(
             "GOOGLE_SSO_PRE_CREATE_CALLBACK",
             "django_google_sso.hooks.pre_create_user",
         )
 
     @property
-    def GOOGLE_SSO_PRE_LOGIN_CALLBACK(self) -> str | Callable[[HttpRequest], str]:
+    def GOOGLE_SSO_PRE_LOGIN_CALLBACK(self) -> Union[str, Callable[[HttpRequest], str]]:
         return self._get_setting(
             "GOOGLE_SSO_PRE_LOGIN_CALLBACK",
             "django_google_sso.hooks.pre_login_user",
         )
 
     @property
-    def GOOGLE_SSO_SAVE_ACCESS_TOKEN(self) -> bool | Callable[[HttpRequest], bool]:
+    def GOOGLE_SSO_SAVE_ACCESS_TOKEN(self) -> Union[bool, Callable[[HttpRequest], bool]]:
         return self._get_setting("GOOGLE_SSO_SAVE_ACCESS_TOKEN", False)
 
     @property
     def GOOGLE_SSO_ALWAYS_UPDATE_USER_DATA(
         self,
-    ) -> bool | Callable[[HttpRequest], bool]:
+    ) -> Union[bool, Callable[[HttpRequest], bool]]:
         return self._get_setting("GOOGLE_SSO_ALWAYS_UPDATE_USER_DATA", False)
 
     @property
-    def GOOGLE_SSO_DEFAULT_LOCALE(self) -> str | Callable[[HttpRequest], str]:
+    def GOOGLE_SSO_DEFAULT_LOCALE(self) -> Union[str, Callable[[HttpRequest], str]]:
         return self._get_setting("GOOGLE_SSO_DEFAULT_LOCALE", "en")
 
     @property
-    def GOOGLE_SSO_ENABLE_MESSAGES(self) -> bool | Callable[[HttpRequest], bool]:
+    def GOOGLE_SSO_ENABLE_MESSAGES(self) -> Union[bool, Callable[[HttpRequest], bool]]:
         return self._get_setting("GOOGLE_SSO_ENABLE_MESSAGES", True)
 
     @property
-    def GOOGLE_SSO_SAVE_BASIC_GOOGLE_INFO(self) -> bool | Callable[[HttpRequest], bool]:
+    def GOOGLE_SSO_SAVE_BASIC_GOOGLE_INFO(self) -> Union[bool, Callable[[HttpRequest], bool]]:
         return self._get_setting("GOOGLE_SSO_SAVE_BASIC_GOOGLE_INFO", True)
 
     @property
     def GOOGLE_SSO_SHOW_FAILED_LOGIN_MESSAGE(
         self,
-    ) -> bool | Callable[[HttpRequest], bool]:
+    ) -> Union[bool, Callable[[HttpRequest], bool]]:
         return self._get_setting("GOOGLE_SSO_SHOW_FAILED_LOGIN_MESSAGE", False)
 
     @property
     def GOOGLE_SSO_AUTHORIZATION_PROMPT(
         self,
-    ) -> str | None | Callable[[HttpRequest], str]:
+    ) -> Union[str, None, Callable[[HttpRequest], str]]:
         return self._get_setting("GOOGLE_SSO_AUTHORIZATION_PROMPT", "consent")
 
     @property
     def SSO_ADMIN_ROUTE(
         self,
-    ) -> str | Callable[[HttpRequest], str]:
+    ) -> Union[str, Callable[[HttpRequest], str]]:
         return self._get_setting("SSO_ADMIN_ROUTE", "admin:index")
 
     @property
     def SSO_SHOW_FORM_ON_ADMIN_PAGE(
         self,
-    ) -> bool | Callable[[HttpRequest], bool]:
+    ) -> Union[bool, Callable[[HttpRequest], bool]]:
         return self._get_setting("SSO_SHOW_FORM_ON_ADMIN_PAGE", True)
 
 
