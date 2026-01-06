@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from typing import Any, Optional
+
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -13,6 +14,7 @@ from google_auth_oauthlib.flow import Flow
 from loguru import logger
 
 from django_google_sso import conf
+from django_google_sso.compat import get_email_field_name
 from django_google_sso.models import GoogleSSOUser
 
 
@@ -22,7 +24,7 @@ class GoogleAuth:
     _flow: Optional[Flow] = None
 
     @property
-    def scopes(self) -> list[str]:
+    def scopes(self) -> List[str]:
         return self.get_sso_value("scopes")
 
     def get_sso_value(self, key: str) -> Any:
@@ -121,7 +123,7 @@ class GoogleAuth:
     def get_user_token(self):
         return self.flow.credentials.token
 
-    def check_enabled(self, next_url: str) -> tuple[bool, str]:
+    def check_enabled(self, next_url: str) -> Tuple[bool, str]:
         response = True, ""
         if not conf.GOOGLE_SSO_ENABLED:
             response = False, "Google SSO not enabled."
@@ -146,7 +148,7 @@ class GoogleAuth:
 
 @dataclass
 class UserHelper:
-    user_info: dict[Any, Any]
+    user_info: Dict[Any, Any]
     request: Any
     user_changed: bool = False
 
@@ -155,7 +157,7 @@ class UserHelper:
         return self.user_info["email"].lower()
 
     @property
-    def user_model(self) -> type[User]:
+    def user_model(self) -> Type[User]:
         return get_user_model()
 
     @property
@@ -164,7 +166,7 @@ class UserHelper:
 
     @property
     def email_field_name(self) -> str:
-        return self.user_model.get_email_field_name()
+        return get_email_field_name(self.user_model)
 
     @property
     def email_is_valid(self) -> bool:
@@ -178,7 +180,7 @@ class UserHelper:
             logger.debug(f"Email {self.user_info_email} is not verified.")
         return email_verified if email_verified is not None else False
 
-    def get_or_create_user(self, extra_users_args: dict | None = None):
+    def get_or_create_user(self, extra_users_args: Optional[Dict] = None):
         user_defaults = extra_users_args or {}
         if self.username_field.name not in user_defaults:
             user_defaults[self.username_field.name] = self.user_info_email

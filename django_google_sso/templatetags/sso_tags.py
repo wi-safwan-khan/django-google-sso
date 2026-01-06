@@ -1,6 +1,6 @@
 import importlib
 import re
-from typing import Callable
+from typing import Callable, Optional, Union
 
 from django import template
 from django.conf import settings
@@ -40,11 +40,11 @@ def define_sso_providers(context):
             sso_enabled_conf = f"{provider.upper()}_SSO_ENABLED"
             sso_enabled: bool = getattr(conf, sso_enabled_conf)
             sso_pages_enabled_conf = f"{provider.upper()}_SSO_PAGES_ENABLED"
-            sso_pages_enabled: bool | Callable[[HttpRequest], bool] | None = getattr(
+            sso_pages_enabled: Optional[Union[bool, Callable[[HttpRequest], bool]]] = getattr(
                 conf, sso_pages_enabled_conf, None
             )
             sso_admin_enabled_conf = f"{provider.upper()}_SSO_ADMIN_ENABLED"
-            sso_admin_enabled: bool | Callable[[HttpRequest], bool] | None = getattr(
+            sso_admin_enabled: Optional[Union[bool, Callable[[HttpRequest], bool]]] = getattr(
                 conf, sso_admin_enabled_conf, None
             )
 

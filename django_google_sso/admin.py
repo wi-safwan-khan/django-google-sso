@@ -1,4 +1,4 @@
-from typing import Optional, Type
+from typing import Optional, Tuple, Type
 
 from django.contrib import admin
 from django.contrib.auth import get_user_model
@@ -13,7 +13,7 @@ if conf.GOOGLE_SSO_ENABLED:
 
 
 def get_current_user_and_admin() -> (
-    tuple[AbstractUser, Optional[UserAdmin], Type[UserAdmin]]
+    Tuple[AbstractUser, Optional[UserAdmin], Type[UserAdmin]]
 ):
     """Get the current user model and last admin class.
 

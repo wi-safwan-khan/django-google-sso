@@ -1,3 +1,5 @@
+from typing import Dict, Optional
+
 from django.http import HttpRequest
 
 from django_google_sso.models import User
@@ -9,7 +11,7 @@ def pre_login_user(user: User, request: HttpRequest) -> None:
     """
 
 
-def pre_create_user(google_user_info: dict, request: HttpRequest) -> dict | None:
+def pre_create_user(google_user_info: Dict, request: HttpRequest) -> Optional[Dict]:
     """
     Callback function called before user is created.
 
@@ -25,7 +27,7 @@ def pre_create_user(google_user_info: dict, request: HttpRequest) -> dict | None
     return {}
 
 
-def pre_validate_user(google_user_info: dict, request: HttpRequest) -> bool:
+def pre_validate_user(google_user_info: Dict, request: HttpRequest) -> bool:
     """
     Callback function called before user is validated.
 

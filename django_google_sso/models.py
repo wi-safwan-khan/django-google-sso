@@ -3,6 +3,8 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
+from django_google_sso.compat import get_email_field_name
+
 User = get_user_model()
 
 
@@ -23,7 +25,8 @@ class GoogleSSOUser(models.Model):
         return None
 
     def __str__(self):
-        user_email = getattr(self.user, User.get_email_field_name())
+        email_field_name = get_email_field_name(User)
+        user_email = getattr(self.user, email_field_name, "")
         return f"{user_email} ({self.google_id})"
 
     class Meta:
